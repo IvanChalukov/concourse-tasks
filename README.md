@@ -20,6 +20,7 @@ fly -t tutorial trigger-job --job hello-sap/hello-sap-job --watch
 ```sh
 run check: find or create container on worker bd02b84ce469: starting task: new task: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: waiting for init preliminary setup: read init-p: connection reset by peer: unknown
 ```
+
 *Solution*:
 CONCOURSE_WORKER_RUNTIME: "houdini" in docker-compose for M1, M2 
 
@@ -32,6 +33,7 @@ To add an exception for this directory, call:
         git config --global --add safe.directory /tmp/build/get
 failed
 ```
+
 *Solution*:
 ```yaml
 git_config:
@@ -40,6 +42,7 @@ git_config:
 ```
 
 3. Setup exact docker image version
+
 *Solution*:
 ```yaml
 image_resource:
@@ -50,6 +53,7 @@ image_resource:
 ```
 
 4. Commit and push to repository
+
 *Solution*:
 I could not do it without setup private_key authentication to github repository
 I was also forced to add following confiration before commit:
