@@ -1,11 +1,13 @@
 resources:
-- name: task-3
+- name: scripts
   type: git
   source:
-    uri: https://github.com/IvanChalukov/concourse-task-2.git
+    uri: https://github.com/IvanChalukov/concourse-tasks.git
+    branch: task-3
     git_config:
     - name: safe.directory
       value: /tmp/build/get
+
 - name: every-5min
   type: time
   icon: clock-outline
@@ -17,7 +19,7 @@ jobs:
   plan:
   - get: every-5min
     trigger: true
-  - get: task-3
+  - get: scripts
     trigger: true
   - task: hello-sap-task
     config:
@@ -28,7 +30,7 @@ jobs:
           tag: 3.11-alpine
         type: registry-image
       inputs:
-      - name: task-3
+      - name: scripts
       run:
         path: python
-        args: ["task-3/print.py"]
+        args: ["scripts/print.py"]
