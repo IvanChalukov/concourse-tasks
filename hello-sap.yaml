@@ -6,7 +6,6 @@ resources:
     git_config:
     - name: safe.directory
       value: /tmp/build/get
-
 - name: every-5min
   type: time
   icon: clock-outline
@@ -14,21 +13,22 @@ resources:
     interval: 300s
 
 jobs:
-- name: docker-pipeline-job
+- name: hello-sap-job
   plan:
   - get: every-5min
     trigger: true
   - get: task-3
     trigger: true
-  - task: docker-pipeline-task
+  - task: hello-sap-task
     config:
       platform: linux
       image_resource:
         source:
-          repository: ichalukov/sample_image
-          tag: latest
+          repository: python
+          tag: 3.11-alpine
         type: registry-image
       inputs:
       - name: task-3
       run:
-        path: task-3/print.sh
+        path: python
+        args: ["task-3/print.py"]
