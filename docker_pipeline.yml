@@ -31,5 +31,4 @@ jobs:
       inputs:
       - name: task-3
       run:
-        path: sh
-        args: ["task-3/print.sh"]
+        path: task-3/print.sh
