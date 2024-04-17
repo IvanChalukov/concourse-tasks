@@ -22,7 +22,7 @@ fly -t tutorial trigger-job --job hello-sap/hello-sap-job --watch
 run check: find or create container on worker bd02b84ce469: starting task: new task: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: waiting for init preliminary setup: read init-p: connection reset by peer: unknown
 ```
 
-*Solution*:
+**Solution**:   
 CONCOURSE_WORKER_RUNTIME: "houdini" in docker-compose for M1, M2 
 
 2. Cannot clone repository in local setup of concourse
@@ -35,7 +35,7 @@ To add an exception for this directory, call:
 failed
 ```
 
-*Solution*:
+**Solution**:   
 ```yaml
 git_config:
 - name: safe.directory
@@ -44,7 +44,7 @@ git_config:
 
 3. Setup exact docker image version
 
-*Solution*:
+**Solution**:   
 ```yaml
 image_resource:
     source:
@@ -55,9 +55,8 @@ image_resource:
 
 4. Commit and push to repository
 
-*Solution*:
-I could not do it without setup private_key authentication to github repository
-I was also forced to add following confiration before commit:
+**Solution**:   
+I needed to set up private key authentication for updating the GitHub repository. Additionally, I had to configure the following settings before making any commits:
 ```sh
 git config --global --add safe.directory "*"
 git config --global user.email "ichalukov@gmail.com"
@@ -66,5 +65,5 @@ git config --global user.name "Ivan Chalakov"
 
 5. How to store already greeted people
 
-*Solution*:
+**Solution**:   
 I decide to use file stored in this repository in branch `task-6`. File is updated by pipeline for every new person added in `personas.json`.
