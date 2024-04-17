@@ -7,8 +7,8 @@ if [ ! "personas.json" ]; then
     exit 1
 fi
 
-if [ ! "greeted.txt" ]; then
-    greeted_file="greeted.txt"
+greeted_file="greeted.txt"
+if [ ! $greeted_file ]; then
     touch "$greeted_file"
 fi
 
