@@ -28,5 +28,5 @@ for name in $names; do
 done
 
 # Commit and push changes to the repository
-git add "$greeted_file"
-git commit -m "Update greeted.txt"
+# git add "$greeted_file"
+# git commit -m "Update greeted.txt"

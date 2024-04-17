@@ -42,6 +42,7 @@ jobs:
         - |
           cd scripts
           ./print.sh
+          git commit -am "Update greeted.txt"
   # push commit
   - put: scripts
     params:
