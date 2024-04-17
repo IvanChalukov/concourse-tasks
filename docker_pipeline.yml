@@ -3,10 +3,10 @@ resources:
   type: git
   source:
     uri: https://github.com/IvanChalukov/concourse-tasks.git
-    branch: task-4
+    branch: task-5
     git_config:
     - name: safe.directory
-      value: /tmp/build/get
+      value: '*'
 
 - name: every-5min
   type: time
@@ -31,5 +31,18 @@ jobs:
         type: registry-image
       inputs:
       - name: scripts
+      outputs:
+      # to pass the commit to the following steps specify
+      # the "scripts" as an output as well
+      - name: scripts
       run:
-        path: scripts/print.sh
+        path: /bin/sh
+        args:
+        - -c
+        - |
+          cd scripts
+          ./print.sh
+  # push commit
+  - put: scripts
+    params:
+      repository: scripts
