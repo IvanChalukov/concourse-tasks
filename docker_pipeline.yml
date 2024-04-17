@@ -1,0 +1,35 @@
+resources:
+- name: task-3
+  type: git
+  source:
+    uri: https://github.com/IvanChalukov/concourse-task-2.git
+    git_config:
+    - name: safe.directory
+      value: /tmp/build/get
+
+- name: every-5min
+  type: time
+  icon: clock-outline
+  source:
+    interval: 300s
+
+jobs:
+- name: docker-pipeline-job
+  plan:
+  - get: every-5min
+    trigger: true
+  - get: task-3
+    trigger: true
+  - task: docker-pipeline-task
+    config:
+      platform: linux
+      image_resource:
+        source:
+          repository: ichalukov/sample_image
+          tag: latest
+        type: registry-image
+      inputs:
+      - name: task-3
+      run:
+        path: sh
+        args: ["task-3/print.sh"]
