@@ -31,10 +31,6 @@ jobs:
         type: registry-image
       inputs:
       - name: scripts
-      outputs:
-      # to pass the commit to the following steps specify
-      # the "scripts" as an output as well
-      - name: scripts
       run:
         path: /bin/sh
         args:
@@ -42,8 +38,3 @@ jobs:
         - |
           cd scripts
           ./print.sh
-          git commit -am "Update greeted.txt"
-  # push commit
-  - put: scripts
-    params:
-      repository: scripts
