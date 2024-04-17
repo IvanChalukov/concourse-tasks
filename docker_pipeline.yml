@@ -3,7 +3,7 @@ resources:
   type: git
   source:
     uri: git@github.com:IvanChalukov/concourse-tasks.git
-    branch: task-5
+    branch: task-6
     icon: github
     private_key: ((private_key))
     git_config:
