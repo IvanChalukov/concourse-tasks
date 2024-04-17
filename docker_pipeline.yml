@@ -2,8 +2,10 @@ resources:
 - name: scripts
   type: git
   source:
-    uri: https://github.com/IvanChalukov/concourse-tasks.git
+    uri: git@github.com:IvanChalukov/concourse-tasks.git
     branch: task-5
+    icon: github
+    private_key: ((private_key))
     git_config:
     - name: safe.directory
       value: '*'
@@ -32,8 +34,6 @@ jobs:
       inputs:
       - name: scripts
       outputs:
-      # to pass the commit to the following steps specify
-      # the "scripts" as an output as well
       - name: scripts
       run:
         path: /bin/sh
@@ -42,8 +42,14 @@ jobs:
         - |
           cd scripts
           ./print.sh
-          git commit -am "Update greeted.txt"
-  # push commit
+          git config --global --add safe.directory "*"
+          git config --global user.email "ichalukov@gmail.com"
+          git config --global user.name "Ivan Chalakov"
+          if ! git diff --quiet; then
+            git commit -am "Update greeted.txt"
+          else
+            echo "No changes to commit."
+          fi
   - put: scripts
     params:
       repository: scripts
