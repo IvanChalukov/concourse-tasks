@@ -1,0 +1,14 @@
+---
+jobs:
+- name: simple-job-1
+  public: true
+  plan:
+  - task: simple-task-1
+    config:
+      platform: linux
+      image_resource:
+        type: registry-image
+        source: { repository: busybox }
+      run:
+        path: echo
+        args: ["Hello world!"]
