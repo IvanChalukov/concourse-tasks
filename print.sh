@@ -1,7 +1,5 @@
 #!/bin/sh
 
-echo "Hello Concourse"
-
 if [ ! "personas.json" ]; then
     echo "Error: File 'personas.json' not found."
     exit 1
@@ -26,7 +24,3 @@ for name in $names; do
         echo "Person $name is already welcomed"
     fi
 done
-
-# Commit and push changes to the repository
-# git add "$greeted_file"
-# git commit -m "Update greeted.txt"
