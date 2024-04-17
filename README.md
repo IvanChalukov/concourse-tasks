@@ -10,10 +10,11 @@ This repository contains solutions to six different exercises, each separated in
 
 ## Notes:
 1. Setup: 
+```sh
 fly -t tutorial set-pipeline -p hello-sap -c hello-sap.yaml 
 fly -t tutorial unpause-pipeline -p hello-sap
 fly -t tutorial trigger-job --job hello-sap/hello-sap-job --watch
-
+```
 
 ## Challanges
 1. Default configuration for concourse does not work for M1, M2 MacOS 
