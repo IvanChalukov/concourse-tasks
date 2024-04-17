@@ -62,3 +62,8 @@ git config --global --add safe.directory "*"
 git config --global user.email "ichalukov@gmail.com"
 git config --global user.name "Ivan Chalakov"
 ```
+
+5. How to store already greeted people
+
+*Solution*:
+I decide to use file stored in this repository in branch `task-6`. File is updated by pipeline for every new person added in `personas.json`.
