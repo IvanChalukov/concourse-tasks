@@ -28,5 +28,10 @@
     "name": "Robert",
     "age": 22,
     "secretIdentity": "intern"
+  },
+  {
+    "name": "Ivan",
+    "age": 29,
+    "secretIdentity": "devops"
   }
 ]
