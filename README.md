@@ -7,6 +7,7 @@ This repository contains solutions to six different exercises, each separated in
 - [Exercise 4 – Build a custom Docker image.](https://github.com/IvanChalukov/concourse-tasks/tree/task-4)
 - [Exercise 5 – Extend your script](https://github.com/IvanChalukov/concourse-tasks/tree/task-5)
 - [Exercise 6 – Troubleshooting](https://github.com/IvanChalukov/concourse-tasks/tree/task-6)
+- [Translate Bash Script to Python](https://github.com/IvanChalukov/concourse-tasks/tree/sh-to-py)
 
 ## Notes:
 1. Setup: 
