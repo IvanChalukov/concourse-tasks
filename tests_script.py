@@ -23,26 +23,32 @@ class TestScript(unittest.TestCase):
 
         self.assertEqual(logging.getLogger(__name__).hasHandlers(), False)
 
-    def test_invalid_directory(self):
+    @patch('script.logger')
+    def test_invalid_directory(self, mock_logger):
         sys.argv = [self.script_name, 'invalid_directory']
         with self.assertRaises(SystemExit) as cm:
             check_arguments()
 
         self.assertEqual(cm.exception.code, 1)
+        mock_logger.error.assert_called_once_with(f"Usage: {self.script_name} <directory>")
 
-    def test_no_directory_name(self):
+    @patch('script.logger')
+    def test_no_directory_name(self, mock_logger):
         sys.argv = [self.script_name]
         with self.assertRaises(SystemExit) as cm:
             check_arguments()
 
         self.assertEqual(cm.exception.code, 1)
+        mock_logger.error.assert_called_once_with(f"Usage: {self.script_name} <directory>")
 
-    def test_multiple_arguments(self):
+    @patch('script.logger')
+    def test_multiple_arguments(self, mock_logger):
         sys.argv = [self.script_name, 'dir1', 'arg2']
         with self.assertRaises(SystemExit) as cm:
             check_arguments()
 
         self.assertEqual(cm.exception.code, 1)
+        mock_logger.error.assert_called_once_with(f"Usage: {self.script_name} <directory>")
 
     @patch('script.os.path')
     @patch('script.open', create=True)
