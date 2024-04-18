@@ -47,7 +47,7 @@ def check_elapsed_time(start_time: float):
         sys.exit(1)
 
 
-def get_uploaded_files(state_file_path: str) -> List:
+def get_uploaded_files(state_file_path: str) -> List[str]:
     """
     Read the state file and return a list of files already uploaded.
     :param state_file_path: The path to the state file storing information about previously uploaded files.
@@ -86,6 +86,7 @@ def retrieve_bucket(s3_client: boto3.client, bucket_name: str) -> List:
     Retrieve the list of objects and their last modified dates in the specified S3 bucket.
     :param s3_client: Boto Service client instance
     :param bucket_name: Name of the S3 bucket
+    :return: A list of objects in the S3 bucket
     """
     try:
         response = s3_client.list_objects_v2(Bucket=bucket_name)
