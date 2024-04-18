@@ -16,7 +16,8 @@ class TestScript(unittest.TestCase):
         self.script_name = 'script_name.py'
         self.tests_dir = 'tests_dir'
 
-    def test_valid_directory(self):
+    @patch('script.os.path.isdir', return_value=True)
+    def test_valid_directory(self, mock_isdir):
         sys.argv = [self.script_name, self.tests_dir]
         check_arguments()
 
