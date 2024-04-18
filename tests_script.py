@@ -192,38 +192,38 @@ class TestScript(unittest.TestCase):
         mock_open.assert_called_once_with(mocked_state_file, 'a')
         mock_logger.info.assert_called_once_with(f"Updated state file with file: {mocked_file_name}")
 
-    @patch('script.get_uploaded_files', return_value=['file1.txt'])
+    @patch('script.get_uploaded_files', return_value=['/directory/file1.txt'])
     @patch('os.listdir', return_value=['file1.txt', 'file2.txt', 'file3.txt'])
     @patch('script.os.path.isfile', return_value=True)
     @patch('script.upload_file', return_value=True)
     @patch('script.update_state_file')
     def test_process_files_with_new_files_uploaded(self, mock_update_state_file, mock_upload_file, mock_isfile,
                                                    mock_listdir, mock_get_uploaded_files):
-        state_file_path = '/path/to/state.txt'
-        dir_name = '/path/to/directory'
-        bucket_name = 'my_bucket'
-        s3_client = MagicMock()
+        mocked_state_file_path = 'state.txt'
+        mocked_dir_name = '/directory'
+        mocked_bucket_name = 'my_bucket'
+        mocked_s3_client = MagicMock()
 
-        result = process_files(state_file_path, dir_name, bucket_name, s3_client)
+        result = process_files(mocked_state_file_path, mocked_dir_name, mocked_bucket_name, mocked_s3_client)
 
         self.assertTrue(result)
-        mock_get_uploaded_files.assert_called_once_with(state_file_path)
-        mock_listdir.assert_called_once_with(dir_name)
+        mock_get_uploaded_files.assert_called_once_with(mocked_state_file_path)
+        mock_listdir.assert_called_once_with(mocked_dir_name)
         mock_isfile.assert_called()
-        mock_upload_file.assert_any_call(s3_client, 'file2.txt', bucket_name)
-        mock_upload_file.assert_any_call(s3_client, 'file3.txt', bucket_name)
-        mock_update_state_file.assert_any_call('file2.txt', state_file_path)
-        mock_update_state_file.assert_any_call('file3.txt', state_file_path)
+        mock_upload_file.assert_any_call(mocked_s3_client, '/directory/file2.txt', mocked_bucket_name)
+        mock_upload_file.assert_any_call(mocked_s3_client, '/directory/file3.txt', mocked_bucket_name)
+        mock_update_state_file.assert_any_call('/directory/file2.txt', mocked_state_file_path)
+        mock_update_state_file.assert_any_call('/directory/file3.txt', mocked_state_file_path)
 
-    @patch('script.get_uploaded_files', return_value=['file1.txt', 'file2.txt', 'file3.txt'])
-    @patch('os.listdir', return_value=['file1.txt', 'file2.txt', 'file3.txt'])
+    @patch('script.get_uploaded_files', return_value=['/directory/file1.txt', '/directory/file2.txt'])
+    @patch('os.listdir', return_value=['file1.txt', 'file2.txt'])
     @patch('script.os.path.isfile', return_value=True)
     @patch('script.upload_file', return_value=False)
     @patch('script.update_state_file')
     def test_process_files_with_no_new_files_uploaded(self, mock_update_state_file, mock_upload_file, mock_isfile,
                                                       mock_listdir, mock_get_uploaded_files):
-        state_file_path = '/path/to/state.txt'
-        dir_name = '/path/to/directory'
+        state_file_path = 'state.txt'
+        dir_name = '/directory'
         bucket_name = 'my_bucket'
         s3_client = MagicMock()
 
@@ -232,7 +232,6 @@ class TestScript(unittest.TestCase):
         self.assertFalse(result)
         mock_get_uploaded_files.assert_called_once_with(state_file_path)
         mock_listdir.assert_called_once_with(dir_name)
-        # mock_isfile.assert_called()
         mock_upload_file.assert_not_called()
         mock_update_state_file.assert_not_called()
 

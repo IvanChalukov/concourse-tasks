@@ -101,15 +101,15 @@ def retrieve_bucket(s3_client: boto3.client, bucket_name: str) -> List:
         return []
 
 
-def update_state_file(file_name: str, state_file: str):
+def update_state_file(file_path: str, state_file: str):
     """
     Add the uploaded file name to the state file.
-    :param file_name: The name of the file to be added to the state file.
+    :param file_path: The path to the file to be added to the state file.
     :param state_file: The path to the state file where the file name will be added.
     """
     with open(state_file, 'a') as f:
-        f.write(file_name + '\n')
-        logger.info(f"Updated state file with file: {file_name}")
+        f.write(file_path + '\n')
+        logger.info(f"Updated state file with file: {file_path}")
 
 
 def process_files(state_file_path: str, dir_name: str, bucket_name: str, s3_client: boto3.client) -> bool:
@@ -125,15 +125,12 @@ def process_files(state_file_path: str, dir_name: str, bucket_name: str, s3_clie
     uploaded_files = get_uploaded_files(state_file_path)
 
     for file_name in os.listdir(dir_name):
-        if file_name in uploaded_files:
-            continue
-
         file_path = os.path.join(dir_name, file_name)
-        if not os.path.isfile(file_path):
+        if not os.path.isfile(file_path) or file_path in uploaded_files:
             continue
 
-        if upload_file(s3_client, file_name, bucket_name):
-            update_state_file(file_name, state_file_path)
+        if upload_file(s3_client, file_path, bucket_name):
+            update_state_file(file_path, state_file_path)
             new_files_uploaded = True
 
     return new_files_uploaded
@@ -141,7 +138,7 @@ def process_files(state_file_path: str, dir_name: str, bucket_name: str, s3_clie
 
 def main():
     check_arguments()
-    state_file_path = initialize_state_file('./')
+    state_file_path = initialize_state_file(os.getcwd())
     dir_name = sys.argv[1]
     s3 = boto3.client('s3')
     bucket_name = "candidatetask"
