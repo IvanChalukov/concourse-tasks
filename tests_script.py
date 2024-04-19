@@ -7,7 +7,7 @@ from unittest.mock import patch, MagicMock
 
 from dateutil.tz import tzutc
 
-from script import check_arguments, initialize_state_file, check_elapsed_time, get_uploaded_files, upload_file, \
+from script import parse_arguments, initialize_state_file, check_elapsed_time, get_uploaded_files, upload_file, \
     retrieve_bucket, update_state_file, main, process_files
 
 
@@ -19,15 +19,15 @@ class TestScript(unittest.TestCase):
     @patch('script.os.path.isdir', return_value=True)
     def test_valid_directory(self, mock_isdir):
         sys.argv = [self.script_name, self.tests_dir]
-        check_arguments()
-
+        dir_name = parse_arguments()
+        self.assertEqual(dir_name, self.tests_dir)
         self.assertEqual(logging.getLogger(__name__).hasHandlers(), False)
 
     @patch('script.logger')
     def test_invalid_directory(self, mock_logger):
         sys.argv = [self.script_name, 'invalid_directory']
         with self.assertRaises(SystemExit) as cm:
-            check_arguments()
+            parse_arguments()
 
         self.assertEqual(cm.exception.code, 1)
         mock_logger.error.assert_called_once_with(f"Usage: {self.script_name} <directory>")
@@ -36,7 +36,7 @@ class TestScript(unittest.TestCase):
     def test_no_directory_name(self, mock_logger):
         sys.argv = [self.script_name]
         with self.assertRaises(SystemExit) as cm:
-            check_arguments()
+            parse_arguments()
 
         self.assertEqual(cm.exception.code, 1)
         mock_logger.error.assert_called_once_with(f"Usage: {self.script_name} <directory>")
@@ -45,7 +45,7 @@ class TestScript(unittest.TestCase):
     def test_multiple_arguments(self, mock_logger):
         sys.argv = [self.script_name, 'dir1', 'arg2']
         with self.assertRaises(SystemExit) as cm:
-            check_arguments()
+            parse_arguments()
 
         self.assertEqual(cm.exception.code, 1)
         mock_logger.error.assert_called_once_with(f"Usage: {self.script_name} <directory>")
@@ -246,13 +246,13 @@ class TestScript(unittest.TestCase):
     @patch('script.check_elapsed_time', side_effect=SystemExit)
     @patch('script.boto3.client')
     @patch('script.time.time')
-    @patch('script.check_arguments')
+    @patch('script.parse_arguments')
     @patch('script.initialize_state_file')
     @patch('script.process_files', return_value=False)
     @patch('script.retrieve_bucket')
     @patch('script.logger')
     def test_main_no_new_files(self, mock_logger, mock_retrieve_bucket, mock_process_files, mock_initialize_state_file,
-                               mock_check_arguments, mock_time, mock_boto3, mock_check_elapsed_time):
+                               mock_parse_arguments, mock_time, mock_boto3, mock_check_elapsed_time):
         with self.assertRaises(SystemExit) as cm:
             main()
 
@@ -262,13 +262,13 @@ class TestScript(unittest.TestCase):
     @patch('script.check_elapsed_time', side_effect=SystemExit)
     @patch('script.boto3.client')
     @patch('script.time.time')
-    @patch('script.check_arguments')
+    @patch('script.parse_arguments')
     @patch('script.initialize_state_file')
     @patch('script.process_files', return_value=True)
     @patch('script.retrieve_bucket', return_value='mocked_bucket_contents')
     @patch('script.logger')
     def test_main_with_new_files(self, mock_logger, mock_retrieve_bucket, mock_process_files,
-                                 mock_initialize_state_file, mock_check_arguments, mock_time, mock_boto3,
+                                 mock_initialize_state_file, mock_parse_arguments, mock_time, mock_boto3,
                                  mock_check_elapsed_time):
         with self.assertRaises(SystemExit) as cm:
             main()

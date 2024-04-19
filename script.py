@@ -14,11 +14,16 @@ stream_handler.setFormatter(formatter)
 logger.addHandler(stream_handler)
 
 
-def check_arguments():
-    """Check if directory name is provided as argument."""
+def parse_arguments():
+    """
+    Parse command-line arguments and return the directory name.
+    :return: Directory name
+    """
     if len(sys.argv) != 2 or not os.path.isdir(sys.argv[1]):
         logger.error(f"Usage: {sys.argv[0]} <directory>")
         sys.exit(1)
+
+    return sys.argv[1]
 
 
 def initialize_state_file(directory: str) -> str:
@@ -31,7 +36,7 @@ def initialize_state_file(directory: str) -> str:
     state_file_path = os.path.join(directory, state_filename)
     if not os.path.isfile(state_file_path):
         open(state_file_path, "a").close()
-        logger.info("Initialized state file: {}".format(state_file_path))
+        logger.info(f"Initialized state file: {state_file_path}")
 
     return state_file_path
 
@@ -59,7 +64,7 @@ def get_uploaded_files(state_file_path: str) -> List[str]:
             logger.info("Successfully read the list of files from the state file.")
             return files_uploaded
     except FileNotFoundError:
-        logger.error("State file not found: {}".format(state_file_path))
+        logger.error(f"State file not found: {state_file_path}")
         return []
 
 
@@ -138,9 +143,8 @@ def process_files(state_file_path: str, dir_name: str, bucket_name: str, s3_clie
 
 
 def main():
-    check_arguments()
+    dir_name = parse_arguments()
     state_file_path = initialize_state_file(os.getcwd())
-    dir_name = sys.argv[1]
     s3 = boto3.client('s3')
     bucket_name = "candidatetask"
 
