@@ -43,4 +43,6 @@ python -m coverage run --source=. -m unittest discover && coverage report --show
 3. Move check_elapsed_time to bottom of while loop. It make easier to test and does not affect program flow
 4. Is it possible to use ArgumentParser. This will change start command to: python script.py [--directory, -d] <path_to_dir>
 5. Add new argument to script to allow changing of log-level on script startup(ex. --log-level DEBUG). This will lead to revisiting current logs.
+6. Separation of concerns. Separate to different files argument_parser.py, file_processor.py, s3_interaction.py, logger.py, script.py
+
 
