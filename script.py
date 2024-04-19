@@ -56,7 +56,7 @@ def get_uploaded_files(state_file_path: str) -> List[str]:
     try:
         with open(state_file_path) as f:
             files_uploaded = [line.strip() for line in f]
-            logger.info("Successfully retrieved the list of files that have already been uploaded.")
+            logger.info("Successfully read the list of files from the state file.")
             return files_uploaded
     except FileNotFoundError:
         logger.error("State file not found: {}".format(state_file_path))

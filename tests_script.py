@@ -104,7 +104,7 @@ class TestScript(unittest.TestCase):
         get_uploaded_files(state_file_path)
         mock_open.assert_called_once_with(state_file_path)
         mock_logger.info.assert_called_once_with(
-            "Successfully retrieved the list of files that have already been uploaded.")
+            "Successfully read the list of files from the state file.")
 
     @patch('script.open', side_effect=FileNotFoundError)
     @patch('script.logger')
