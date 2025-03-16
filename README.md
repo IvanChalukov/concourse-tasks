@@ -68,4 +68,4 @@ git config --global user.name "Ivan Chalakov"
 
 **Solution**:   
 I decide to use file stored in this repository in branch `task-6`. File is updated by pipeline for every new person added in `personas.json`.
-tee
+te
